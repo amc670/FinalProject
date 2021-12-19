@@ -251,23 +251,26 @@ let series_id = "";
 let api_urls = [];
 
 let supersectors = ['00', '05', '06', '07', '08', '10', '20', '30', '31', '32', '40', '41', '42', '43', '44', '50', '55', '60', '65', '70', '80', '90'];
+//This loop just fill in the api_urls array with all of the urls used to retrieve the data from the BLS API
 for(i in supersectors){
     series_id = "CEU" + supersectors[i] + "00000001";
     api_urls.push(series_id);
 };
 
+//This loop is used to ping the api for each supersector
 for(let i = 0; i < api_urls.length;i++) {
-    const api_url = "https://api.bls.gov/publicAPI/v2/timeseries/data/" + api_urls[i] //+ "?registrationkey={keygoeshere};
-    let xhr = new XMLHttpRequest();
-    xhr.responseType = "json"
-    xhr.open("GET", api_url);
-    xhr.send();
-    xhr.onreadystatechange = function(){
-        if (xhr.readyState === 4 && xhr.status === 200){
-            let dataArray = this.response.Results.series[0].data;
-            for (let j = dataArray.length-1; j > -1; j--) {
-                data.datasets[i].data.push(dataArray[j].value);
-            }
-        }
+  //MAKE SURE TO UNCOMMENT THE REGISTRATION KEY IF YOU ARE USING ONE
+  const api_url = "https://api.bls.gov/publicAPI/v2/timeseries/data/" + api_urls[i] //+"?registrationkey={keygoeshere};
+  let xhr = new XMLHttpRequest();
+  xhr.responseType = "json"
+  xhr.open("GET", api_url);
+  xhr.send();
+  xhr.onreadystatechange = function(){  //This function is used to make sure that the data that is retrieved is in order
+    if (xhr.readyState === 4 && xhr.status === 200){
+      let dataArray = this.response.Results.series[0].data;
+      for (let j = dataArray.length-1; j > -1; j--) {  //This loop is used to move the data that we got from the BLS API into the it's respective dataset data array
+        data.datasets[i].data.push(dataArray[j].value);
+      }
     }
+  }
 }
