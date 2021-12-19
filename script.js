@@ -260,16 +260,16 @@ for(i in supersectors){
 //This loop is used to ping the api for each supersector
 for(let i = 0; i < api_urls.length;i++) {
   //MAKE SURE TO UNCOMMENT THE REGISTRATION KEY IF YOU ARE USING ONE
-  const api_url = "https://api.bls.gov/publicAPI/v2/timeseries/data/" + api_urls[i] //+"?registrationkey={keygoeshere};
+  const api_url = "https://api.bls.gov/publicAPI/v2/timeseries/data/" + api_urls[i] //+"?registrationkey={keygoeshere}";
   let xhr = new XMLHttpRequest();
-  xhr.responseType = "json"
+  xhr.responseType = "json";
   xhr.open("GET", api_url);
   xhr.send();
   xhr.onreadystatechange = function(){  //This function is used to make sure that the data that is retrieved is in order
     if (xhr.readyState === 4 && xhr.status === 200){
       if (this.response.status == "REQUEST_NOT_PROCESSED"){
-        document.getElementById("warning").style.display = "block"
-        document.getElementById("warning2").style.display = "block"
+        document.getElementById("warning").style.display = "block";
+        document.getElementById("warning2").style.display = "block";
       } else {
           let dataArray = this.response.Results.series[0].data;
           for (let j = dataArray.length-1; j > -1; j--) {  //This loop is used to move the data that we got from the BLS API into the it's respective dataset data array
@@ -277,8 +277,8 @@ for(let i = 0; i < api_urls.length;i++) {
           }
       }
     } else if(xhr.status === 400 || xhr.status === 404) {
-      document.getElementById("warning").innerHTML = "Cannot connect to API please try again later"
-      document.getElementById("warning").style.display = "block"
+      document.getElementById("warning").innerHTML = "Cannot connect to API please try again later";
+      document.getElementById("warning").style.display = "block";
     }
   }
 }
