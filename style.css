@@ -13,4 +13,15 @@ h3 {
 #statement {
   padding-top: 2%;
   text-align: center;
+  font-style: italic;
+}
+#warning {
+  font-size: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+#warning2 {
+  font-size: 30px;
+  text-align: center;
+  font-weight: bold;
 }

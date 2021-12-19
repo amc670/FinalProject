@@ -267,10 +267,18 @@ for(let i = 0; i < api_urls.length;i++) {
   xhr.send();
   xhr.onreadystatechange = function(){  //This function is used to make sure that the data that is retrieved is in order
     if (xhr.readyState === 4 && xhr.status === 200){
-      let dataArray = this.response.Results.series[0].data;
-      for (let j = dataArray.length-1; j > -1; j--) {  //This loop is used to move the data that we got from the BLS API into the it's respective dataset data array
-        data.datasets[i].data.push(dataArray[j].value);
+      if (this.response.status == "REQUEST_NOT_PROCESSED"){
+        document.getElementById("warning").style.display = "block"
+        document.getElementById("warning2").style.display = "block"
+      } else {
+          let dataArray = this.response.Results.series[0].data;
+          for (let j = dataArray.length-1; j > -1; j--) {  //This loop is used to move the data that we got from the BLS API into the it's respective dataset data array
+            data.datasets[i].data.push(dataArray[j].value);
+          }
       }
+    } else if(xhr.status === 400 || xhr.status === 404) {
+      document.getElementById("warning").innerHTML = "Cannot connect to API please try again later"
+      document.getElementById("warning").style.display = "block"
     }
   }
 }
